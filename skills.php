@@ -106,6 +106,29 @@
               <h2>
                 Chronicles of Arcadia Skills
               </h2>
+              <br>
+              
+            </div>
+            <div class="btn-box">
+                <form action="skills.php" method="post">
+                    <p >Select your Class:</p>
+                    <select name="classes" id="classes">
+                      <option value="1">Warrior</option>
+                      <option value="2">Rogue</option>
+                      <option value="3">Mage</option>
+                      <option value="4">Priest</option>
+                      <option value="5">Bard</option>
+          
+                    
+                    </select>
+                    <br><br><br>
+                    <input type="submit" value="Search" class="btn-1">
+                      
+                      
+                    
+                  </form> 
+              
+
             </div>
             <?php
 $servername = "localhost";
@@ -113,27 +136,32 @@ $username = "root";
 $password = "";
 $dbname = "coa";
 
-
-$conn = new mysqli($servername, $username, $password, $dbname);
+if (empty($_POST["classes"])) {
+  echo "class  is required";
+} else {
+  $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
   }
   
-  $sql = "SELECT * FROM skills";
+  $sql = "SELECT * FROM skills WHERE class=".$_POST["classes"];
   $result = $conn->query($sql);
   
   if ($result->num_rows > 0) {
-    echo "<table class='table'><tr><th>ID</th><th>Name</th><th>Description</th><th>Cooldown</th></tr>";
+    echo "<table class='table'><tr><th></th><th>Name</th><th>Description</th><th>Cooldown</th></tr>";
     // output data of each row
     while($row = $result->fetch_assoc()) {
-      echo "<tr><td>".$row["id"]."</td><td>".$row["name"]."</td><td> ".$row["description"]."</td> <td>".$row["cooldown"]."</td></tr>";
+      echo "<tr><td><img src='".$row["icon"]."'></td><td>".$row["name"]."</td><td> ".$row["description"]."</td> <td>".$row["cooldown"]."</td></tr>";
     }
     echo "</table>";
   } else {
     echo "0 results";
   }
   $conn->close();
+
+}
+
 ?>
             <br>
             
